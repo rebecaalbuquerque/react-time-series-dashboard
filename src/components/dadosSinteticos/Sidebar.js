@@ -1,0 +1,44 @@
+import React, { Component } from 'react'
+import { Link, NavLink } from 'react-router-dom'
+
+class Sidebar extends Component {
+
+    render() {
+
+        return (
+            <div className="sidebar">
+                
+                <div className="sidebar-wrapper">
+                    <div className="logo">
+                        <Link to="/" className="simple-text">
+                            Lorem ipsum
+                        </Link>
+                    </div>
+
+                    <ul className="nav">
+                        <li className="nav-item">
+                            <NavLink className="nav-link" to="/gerarSeries">
+                                <p>Gerar séries</p>
+                            </NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink className="nav-link" to="/profile">
+                                <p>Importar predições</p>
+                            </NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink className="nav-link" to="/profile">
+                                <p>Métricas</p>
+                            </NavLink>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        )
+
+    }
+
+}
+
+export { Sidebar }
