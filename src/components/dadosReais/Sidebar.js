@@ -3,6 +3,14 @@ import { Link, NavLink } from 'react-router-dom'
 
 class Sidebar extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            metricasEstado: localStorage.getItem("@time-series-dashboard/teste") == null ? "nav-link-desabilitado" : "nav-link-habilitado"
+        };
+    }
+
     render() {
 
         return (
@@ -11,7 +19,7 @@ class Sidebar extends Component {
                 <div className="sidebar-wrapper">
                     <div className="logo">
                         <Link to="/" className="simple-text">
-                            Lorem ipsum
+                            TS Forecast Analysis
                         </Link>
                     </div>
 
@@ -22,7 +30,7 @@ class Sidebar extends Component {
                             </NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink className="nav-link" to="/metricas">
+                            <NavLink className={"nav-link " + this.state.metricasEstado} to="/metricas">
                                 <p>Métricas</p>
                             </NavLink>
                         </li>

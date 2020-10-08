@@ -855,3 +855,17 @@
     color: #313131;
     margin-bottom: 0 !important;
 }
+
+.nav-link-desabilitado {
+    pointer-events: none !important;
+    color: #989898 !important;
+}
+
+.sidebar .nav li:hover .nav-link-desabilitado, body>.navbar-collapse .nav li:hover .nav-link-desabilitado {
+    background: none !important;
+    color: #989898 !important;
+}
+
+.nav-link-habilitado {
+    pointer-events: initial;
+}

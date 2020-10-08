@@ -11,7 +11,7 @@ class Sidebar extends Component {
                 <div className="sidebar-wrapper">
                     <div className="logo">
                         <Link to="/" className="simple-text">
-                            Lorem ipsum
+                            TS Forecast Analysis
                         </Link>
                     </div>
 

@@ -18,7 +18,9 @@ class ImportarPredicoes extends Component {
     onFormSubmit(e) {
         e.preventDefault()
 
-        let formData = new FormData();
+        localStorage.setItem("@time-series-dashboard/teste", "dados teste")
+
+        /*let formData = new FormData();
         formData.append("dadosReais", this.state.dadosReais);
 
         Array.from(this.state.predicoes).map((file, index) => {
@@ -35,7 +37,7 @@ class ImportarPredicoes extends Component {
             })
             .catch(function (error) {
                 console.log(error);
-            });
+            });*/
 
     }
 
@@ -61,7 +63,7 @@ class ImportarPredicoes extends Component {
                                     <label>
                                         <h3 className="card-input-title">Dados reais</h3>
                                         <br/>
-                                        <input type="file" required={true} onChange={this.onDadosReaisChange}
+                                        <input type="file"  onChange={this.onDadosReaisChange}
                                                accept=".csv"/>
                                     </label>
                                 </div>
@@ -73,7 +75,7 @@ class ImportarPredicoes extends Component {
                                     <label>
                                         <h3 className="card-input-title">Predições</h3>
                                         <br/>
-                                        <input type="file" required={true} onChange={this.onPredicoesChange}
+                                        <input type="file"  onChange={this.onPredicoesChange}
                                                multiple={true}
                                                accept=".csv"/>
                                     </label>
