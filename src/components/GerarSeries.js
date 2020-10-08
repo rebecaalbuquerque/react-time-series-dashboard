@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
 import {GridList, GridListTile} from '@material-ui/core';
-import API from "../../utils/API"
+import API from "../utils/API"
 import GridListTileBar from "@material-ui/core/GridListTileBar";
 import JSZip from "jszip";
-import saveAs from "../../utils/FileSaver"
+import saveAs from "../utils/FileSaver"
 
 class GerarSeries extends Component {
 

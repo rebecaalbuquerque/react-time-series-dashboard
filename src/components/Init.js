@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom'
-import { Sidebar as SidebarSinteticos } from './dadosSinteticos/Sidebar'
-import { Sidebar as SidebarReais } from './dadosReais/Sidebar'
-import { Main as MainSinteticos } from './dadosSinteticos/Main'
-import { Main as MainReais } from './dadosReais/Main'
+import Sidebar from './Sidebar'
+import Main from './Main'
 
 class Init extends Component {
 
@@ -13,15 +11,12 @@ class Init extends Component {
         return (
             <div className="wrapper">
                 <Router>
-                    { data.isSintetico
-                        ? <SidebarSinteticos />
-                        : <SidebarReais />
-                    }
-                    { data.isSintetico
-                        ? <Route path="/" component={MainSinteticos} />
-                        : <Route path="/" component={MainReais} />
-                    }
-                
+                    <Sidebar isSintetico={data.isSintetico} />
+                    <Route
+                        path="/"
+                        render={(props) => (
+                            <Main {...props} isSintetico={data.isSintetico} />
+                        )} />
                 </Router>
             </div>
         )

@@ -1,13 +1,22 @@
-import React, { Component } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import React, {Component} from 'react'
+import {Link, NavLink} from 'react-router-dom'
 
 class Sidebar extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            gerarSeriesHabilitado: this.props.isSintetico ? "" : "nav-item-disabled",
+            metricasEstado: localStorage.getItem("@time-series-dashboard/teste") == null ? "nav-link-desabilitado" : "nav-link-habilitado"
+        };
+    }
 
     render() {
 
         return (
             <div className="sidebar">
-                
+
                 <div className="sidebar-wrapper">
                     <div className="logo">
                         <Link to="/" className="simple-text">
@@ -16,18 +25,21 @@ class Sidebar extends Component {
                     </div>
 
                     <ul className="nav">
-                        <li className="nav-item">
+
+                        <li className={"nav-item " + this.state.gerarSeriesHabilitado}>
                             <NavLink className="nav-link" to="/gerarSeries">
                                 <p>Gerar séries</p>
                             </NavLink>
                         </li>
+
                         <li className="nav-item">
                             <NavLink className="nav-link" to="/importarPredicoes">
                                 <p>Importar predições</p>
                             </NavLink>
                         </li>
+
                         <li className="nav-item">
-                            <NavLink className="nav-link" to="/metricas">
+                            <NavLink className={"nav-link " + this.state.metricasEstado} to="/metricas">
                                 <p>Métricas</p>
                             </NavLink>
                         </li>
@@ -41,4 +53,4 @@ class Sidebar extends Component {
 
 }
 
-export { Sidebar }
+export default Sidebar

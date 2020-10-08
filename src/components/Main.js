@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import Navbar from "../Navbar"
-import Footer from "../Footer"
+import Navbar from "./Navbar"
+import Footer from "./Footer"
 import { Switch, Route, Redirect } from "react-router-dom"
-import GerarSeries from "./GerarSeries"
-import Metricas from "../Metricas"
-import ImportarPredicoes from "../ImportarPredicoes"
+import Metricas from "./Metricas"
+import ImportarPredicoes from "./ImportarPredicoes"
+import GerarSeries from "./GerarSeries";
 
 class Main extends Component {
 
@@ -17,7 +17,13 @@ class Main extends Component {
                     <Route path="/gerarSeries" component={GerarSeries} />
                     <Route path="/importarPredicoes" component={ImportarPredicoes} />
                     <Route path="/metricas" component={Metricas} />
-                    <Redirect from="*" to="/gerarSeries" />
+
+                    {this.props.isSintetico
+                        ? <Redirect from="*" to="/gerarSeries" />
+                        : <Redirect from="*" to="/importarPredicoes" />
+                    }
+
+
                 </Switch>
                 <Footer />
             </div>
@@ -27,4 +33,4 @@ class Main extends Component {
 
 }
 
-export { Main }
+export default Main

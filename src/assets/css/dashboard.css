@@ -869,3 +869,7 @@
 .nav-link-habilitado {
     pointer-events: initial;
 }
+
+.nav-item-disabled {
+    display: none;
+}
