@@ -22,12 +22,12 @@ class Sidebar extends Component {
                             </NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink className="nav-link" to="/profile">
+                            <NavLink className="nav-link" to="/importarPredicoes">
                                 <p>Importar predições</p>
                             </NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink className="nav-link" to="/profile">
+                            <NavLink className="nav-link" to="/metricas">
                                 <p>Métricas</p>
                             </NavLink>
                         </li>

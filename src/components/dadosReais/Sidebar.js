@@ -17,13 +17,13 @@ class Sidebar extends Component {
 
                     <ul className="nav">
                         <li className="nav-item">
-                            <NavLink className="nav-link" to="/gerarSeries">
-                                <p>Item 3</p>
+                            <NavLink className="nav-link" to="/importarPredicoes">
+                                <p>Importar predições</p>
                             </NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink className="nav-link" to="/gerarSeries">
-                                <p>Item 4</p>
+                            <NavLink className="nav-link" to="/metricas">
+                                <p>Métricas</p>
                             </NavLink>
                         </li>
                     </ul>

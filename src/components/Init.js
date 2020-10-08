@@ -6,10 +6,9 @@ import { Main as MainSinteticos } from './dadosSinteticos/Main'
 import { Main as MainReais } from './dadosReais/Main'
 
 class Init extends Component {
-    render() {
 
+    render() {
         const { data } = this.props.location
-        console.log(data)
 
         return (
             <div className="wrapper">

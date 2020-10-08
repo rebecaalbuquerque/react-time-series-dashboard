@@ -6,9 +6,11 @@ class Metricas extends Component {
 
         return (
             <div className="content">
-                <p>
-                Metricas
-                </p>    
+                <div className="container-fluid">
+                    <p>
+                        Métricas
+                    </p>
+                </div>
             </div>
         )
 

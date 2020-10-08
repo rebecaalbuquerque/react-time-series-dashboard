@@ -826,3 +826,32 @@
 .documentation .dropdown .dropdown-menu.show {
     transform: translate3d(0, 39px, 0) !important;
 }
+
+.vertical-center {
+    width: 100%;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.grid-list-title-bar {
+    background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%) !important;
+}
+
+.btn-centralized {
+    display: block;
+    margin: auto auto 20px auto;
+}
+
+.card-input {
+    padding: 0 20px 16px 20px !important;
+    background: #EDEDED !important;
+}
+
+.card-input-title {
+    text-transform: none !important;
+    color: #313131;
+    margin-bottom: 0 !important;
+}
