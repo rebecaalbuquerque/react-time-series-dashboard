@@ -25,12 +25,11 @@ class InputsPredicoes extends Component {
                     <div className="col-md-4">
                         <div className="card card-input">
                             <label>
-                                <h3 className="card-input-title">Predições</h3>
+                                <h3 className="card-input-title">Predição</h3>
                                 <br/>
                                 <input type="file"
                                        required={true}
                                        onChange={(e) => this.props.onPredicoesChange(e, this.props.id)}
-                                       multiple={true}
                                        accept=".csv"/>
                             </label>
                         </div>

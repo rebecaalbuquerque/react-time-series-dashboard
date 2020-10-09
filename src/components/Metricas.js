@@ -21,7 +21,7 @@ class Metricas extends Component {
                     { this.state.seriesTemporaisMetricas == null
                         ?
                         <p>
-                            Vá em "IMPORTAR PREDIÇÕES" para gerar as métricas da sua série temporal!
+                            Vá em "IMPORTAR PREDIÇÕES" para gerar as métricas das suas séries temporais!
                         </p>
                         :
                         <div>

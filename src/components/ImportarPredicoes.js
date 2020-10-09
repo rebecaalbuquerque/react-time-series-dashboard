@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import API from "../utils/API"
 import InputsPredicoes from "./InputsPredicoes";
+import {fileToBase64} from "../utils/FileUtils";
 
 class ImportarPredicoes extends Component {
 
@@ -43,39 +44,45 @@ class ImportarPredicoes extends Component {
     onFormSubmit(e) {
         e.preventDefault()
 
-        let formData = new FormData();
+        let listData = []
 
-        // todo: ajeitar/melhorar
-        this.state.dados.map((item, index) => {
-            formData.append("nomeModelo-" + index, item.nomeModelo)
-            formData.append("dadosReais-" + index, item.dadosReais)
+        new Promise((resolve, reject) => {
 
-            Array.from(item.predicoes).map((file, index) => {
-                formData.append("predicao-" + index, file);
-                return file;
-            });
+            this.state.dados.forEach((item, index) => {
 
-            return item
+                fileToBase64(item.dadosReais).then(resultDadosReais => {
+
+                    fileToBase64(item.predicoes).then(resultPredicoes => {
+
+                        listData.push({
+                            nomeModelo: item.nomeModelo,
+                            dadosReais: resultDadosReais,
+                            predicoes: resultPredicoes
+                        })
+
+                        if (index === this.state.dados.length -1)
+                            resolve();
+                    })
+
+                })
+
+            })
+
+        }).then(() => {
+
+            API
+                .post("/metricas", listData)
+                .then(function (response) {
+                    console.log(response.data)
+                    localStorage.setItem("@time-series-dashboard/seriesTemporaisMetricas", JSON.stringify(response.data))
+                    alert("Importação realizada com sucesso!")
+                })
+                .catch(function (error) {
+                    alert("Ocorreu um erro ao tentar importar os arquivos.")
+                    console.log(error);
+                });
         })
 
-        /*formData.append("nomeModelo", this.state.nomeModelo);
-        formData.append("dadosReais", this.state.dadosReais);
-
-        Array.from(this.state.predicoes).map((file, index) => {
-            formData.append("predicao-" + index, file);
-            return file;
-        });*/
-
-        API
-            .post("/metricas", formData)
-            .then(function (response) {
-                localStorage.setItem("@time-series-dashboard/seriesTemporaisMetricas", JSON.stringify(response.data))
-                alert("Importação realizada com sucesso!")
-            })
-            .catch(function (error) {
-                alert("Ocorreu um erro ao tentar importar os arquivos.")
-                console.log(error);
-            });
 
     }
 
@@ -101,7 +108,7 @@ class ImportarPredicoes extends Component {
                     id: id,
                     nomeModelo: "",
                     dadosReais: null,
-                    predicoes: []
+                    predicoes: null
                 }
             )
         }
