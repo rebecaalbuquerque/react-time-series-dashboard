@@ -848,6 +848,7 @@
 .card-input {
     padding: 0 20px 16px 20px !important;
     background: #EDEDED !important;
+    min-height: 162px;
 }
 
 .card-input-title {
@@ -872,4 +873,23 @@
 
 .nav-item-disabled {
     display: none;
+}
+
+.table .thead-dark th {
+    color: #fff;
+    background-color: #313131;
+    border-color: #32383e;
+}
+
+.table-bordered th, .table-bordered td {
+    border: 1px solid #dee2e6 !important;
+    padding: 0.3rem !important;
+}
+
+.table-bordered {
+    text-align: center !important;
+}
+
+.table>thead>tr>th {
+    text-align: center !important;
 }

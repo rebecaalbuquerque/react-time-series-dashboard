@@ -2,6 +2,14 @@ import React, {Component} from 'react';
 import {Link} from "react-router-dom"
 
 class Selecao extends Component {
+
+    constructor(props) {
+        super(props);
+
+        localStorage.clear()
+
+    }
+
     render() {
         return (
             <div className="content">

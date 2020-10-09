@@ -1,28 +1,40 @@
-import React, { Component } from 'react'
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
-import MetricasReduzidas from "./MetricasReduzidas";
-import MetricasCompletas from "./MetricasCompletas";
+import React, {Component} from 'react'
+import {Redirect} from "react-router-dom";
 
 class Metricas extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isVersaoReduzida: true,
+            seriesTemporaisMetricas: JSON.parse(localStorage.getItem("@time-series-dashboard/seriesTemporaisMetricas"))
+        };
+
+    }
+
     render() {
-        /*const { data } = this.props.location*/
 
         return (
             <div className="content">
                 <div className="container-fluid">
-                    <p>
-                        Métricas
-                    </p>
+                    { this.state.seriesTemporaisMetricas == null
+                        ?
+                        <p>
+                            Vá em "IMPORTAR PREDIÇÕES" para gerar as métricas da sua série temporal!
+                        </p>
+                        :
+                        <div>
+                            { this.state.isVersaoReduzida
+                                ? <Redirect from="*" to="/metricasReduzidas" />
+                                : <Redirect from="*" to="/metricasCompletas" />
+                            }
+                        </div>
+                    }
+
                 </div>
             </div>
 
-        /*<Router>
-            { data.isVersaoReduzida
-                ? <Route path="/metricasteste" component={MetricasReduzidas} />
-                : <Route path="/metricasteste" component={MetricasCompletas} />
-            }
-        </Router>*/
         )
 
     }

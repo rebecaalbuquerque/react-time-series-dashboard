@@ -8,7 +8,6 @@ class Sidebar extends Component {
 
         this.state = {
             gerarSeriesHabilitado: this.props.isSintetico ? "" : "nav-item-disabled",
-            metricasEstado: localStorage.getItem("@time-series-dashboard/teste") == null ? "nav-link-desabilitado" : "nav-link-habilitado"
         };
     }
 
@@ -39,14 +38,16 @@ class Sidebar extends Component {
                         </li>
 
                         <li className="nav-item">
-                            <NavLink className={"nav-link " + this.state.metricasEstado} to="/metricas">
+                            <NavLink className="nav-link" to="/metricas">
                                 <p>Métricas</p>
                             </NavLink>
                         </li>
                     </ul>
 
                 </div>
+
             </div>
+
         )
 
     }
