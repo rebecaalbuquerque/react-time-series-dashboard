@@ -7,7 +7,6 @@ class Metricas extends Component {
         super(props);
 
         this.state = {
-            isVersaoReduzida: true,
             seriesTemporaisMetricas: JSON.parse(localStorage.getItem("@time-series-dashboard/seriesTemporaisMetricas"))
         };
 
@@ -25,9 +24,9 @@ class Metricas extends Component {
                         </p>
                         :
                         <div>
-                            { this.state.isVersaoReduzida
-                                ? <Redirect from="*" to="/metricasReduzidas" />
-                                : <Redirect from="*" to="/metricasCompletas" />
+                            { this.state.seriesTemporaisMetricas.length > 2
+                                ? <Redirect from="*" to="/metricasCompletas" />
+                                : <Redirect from="*" to="/metricasReduzidas" />
                             }
                         </div>
                     }

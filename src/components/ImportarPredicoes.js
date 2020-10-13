@@ -57,6 +57,7 @@ class ImportarPredicoes extends Component {
                         listData.push({
                             nomeModelo: item.nomeModelo,
                             dadosReais: resultDadosReais,
+                            dadosReaisArquivo: item.dadosReais.name,
                             predicoes: resultPredicoes
                         })
 

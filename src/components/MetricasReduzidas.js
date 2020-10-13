@@ -18,16 +18,18 @@ class MetricasReduzidas extends Component {
                 <div className="container-fluid">
 
                     {this.state.seriesTemporaisMetricas.map((item) =>
+
                         <div>
 
-                            <h4>{item.nome} - ({item.modelo})</h4>
+                            <h4>{item.nome}</h4>
 
                             <hr/>
 
                             <div className="row">
 
                                 <div className="col-5">
-                                    <img className="img-fluid" src={`data:image/jpeg;base64,${item.imagem}`}
+                                    <img className="img-fluid"
+                                         src={`data:image/jpeg;base64,${item.imagem}`}
                                          alt={item.nome}/>
                                 </div>
 
