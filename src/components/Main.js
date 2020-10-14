@@ -7,6 +7,7 @@ import MetricasReduzidas from "./MetricasReduzidas"
 import MetricasCompletas from "./MetricasCompletas"
 import ImportarPredicoes from "./ImportarPredicoes"
 import GerarSeries from "./GerarSeries";
+import {Spinner} from "./Spinner";
 
 class Main extends Component {
 
@@ -15,6 +16,7 @@ class Main extends Component {
         return (
             <div className="main-panel">
                 <Navbar />
+                <Spinner/>
                 <Switch>
                     <Route path="/gerarSeries" component={GerarSeries} />
                     <Route path="/importarPredicoes" component={ImportarPredicoes} />

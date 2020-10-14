@@ -4,6 +4,7 @@ import API from "../utils/API"
 import GridListTileBar from "@material-ui/core/GridListTileBar";
 import JSZip from "jszip";
 import saveAs from "../utils/FileSaver"
+import { trackPromise} from 'react-promise-tracker';
 
 class GerarSeries extends Component {
 
@@ -11,7 +12,6 @@ class GerarSeries extends Component {
         super(props);
 
         this.state = {
-            isLoading: true,
             ts: []
         };
 
@@ -48,11 +48,15 @@ class GerarSeries extends Component {
     }
 
     donwloadFiles() {
+        if(this.state.ts == null || this.state.ts.length === 0) {
+            alert("Espere as séries temporais serem carregadas.")
+            return;
+        }
+
         const zip = new JSZip();
 
         this.state.ts.forEach(function(item) {
             zip.file(item.nome + ".csv", item.csv, {base64: true});
-            zip.file(item.nome + ".png", item.imagem, {base64: true});
         });
 
         zip.generateAsync({type:"blob"}).then(function(content) {
@@ -62,12 +66,11 @@ class GerarSeries extends Component {
     }
 
     async componentDidMount() {
-        let response = await API.get("seriesTemporaisSinteticas")
-        console.log(response.data)
+
+        let response = await trackPromise(API.get("seriesTemporaisSinteticas"))
 
         this.setState({
             ...this.state, ...{
-                isLoading: false,
                 ts: response.data
             }
         });
