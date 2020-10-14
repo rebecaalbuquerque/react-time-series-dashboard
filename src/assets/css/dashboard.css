@@ -893,3 +893,13 @@
 .table>thead>tr>th {
     text-align: center !important;
 }
+
+.spinner {
+    width: 100%;
+}
+
+.spinner > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

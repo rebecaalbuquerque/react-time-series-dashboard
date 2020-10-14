@@ -19,7 +19,7 @@ class MetricasReduzidas extends Component {
 
                     {this.state.seriesTemporaisMetricas.map((item) =>
 
-                        <div>
+                        <div key={item.nome}>
 
                             <h4>{item.nome}</h4>
 
@@ -41,16 +41,20 @@ class MetricasReduzidas extends Component {
                                         <tr>
                                             {item.metricas.map((m) => m.metrica).map((nomeMetrica) =>
 
-                                                <th><b>{nomeMetrica}</b></th>
+                                                <th key={nomeMetrica}>
+                                                    <b>{nomeMetrica}</b>
+                                                </th>
                                             )}
                                         </tr>
                                         </thead>
 
                                         <tbody>
                                         <tr>
-                                            {item.metricas.map((m) => m.valor).map((valorMetrica) =>
+                                            {item.metricas.map((m) => m.valor).map((valorMetrica, index) =>
 
-                                                <td>{valorMetrica}</td>
+                                                <td key={"valorMetrica" + index}>
+                                                    {valorMetrica}
+                                                </td>
                                             )}
                                         </tr>
                                         </tbody>

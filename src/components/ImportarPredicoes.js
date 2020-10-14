@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import API from "../utils/API"
 import InputsPredicoes from "./InputsPredicoes";
 import {fileToBase64} from "../utils/FileUtils";
+import {trackPromise} from "react-promise-tracker";
 
 class ImportarPredicoes extends Component {
 
@@ -13,6 +14,7 @@ class ImportarPredicoes extends Component {
             inputsPredicoes: [
                 <InputsPredicoes
                     id={0}
+                    key={"inputsPredicoes" + 0}
                     onDadosReaisChange={(e, id) => this.onDadosReaisChange(e, id)}
                     onPredicoesChange={(e, id) => this.onPredicoesChange(e, id)}
                     onNomeModeloChange={(e, id) => this.onNomeModeloChange(e, id)}/>
@@ -33,6 +35,7 @@ class ImportarPredicoes extends Component {
                 ...this.state.inputsPredicoes,
                 <InputsPredicoes
                     id={this.state.dados.length}
+                    key={"inputsPredicoes" + this.state.inputsPredicoes.length}
                     onDadosReaisChange={(e, id) => this.onDadosReaisChange(e, id)}
                     onPredicoesChange={(e, id) => this.onPredicoesChange(e, id)}
                     onNomeModeloChange={(e, id) => this.onNomeModeloChange(e, id)}/>
@@ -61,7 +64,7 @@ class ImportarPredicoes extends Component {
                             predicoes: resultPredicoes
                         })
 
-                        if (index === this.state.dados.length -1)
+                        if (index === this.state.dados.length - 1)
                             resolve();
                     })
 
@@ -71,17 +74,19 @@ class ImportarPredicoes extends Component {
 
         }).then(() => {
 
-            API
-                .post("/metricas", listData)
-                .then(function (response) {
-                    console.log(response.data)
-                    localStorage.setItem("@time-series-dashboard/seriesTemporaisMetricas", JSON.stringify(response.data))
-                    alert("Importação realizada com sucesso!")
-                })
-                .catch(function (error) {
-                    alert("Ocorreu um erro ao tentar importar os arquivos.")
-                    console.log(error);
-                });
+            trackPromise(
+                API
+                    .post("/metricas", listData)
+                    .then(function (response) {
+                        console.log(response.data)
+                        localStorage.setItem("@time-series-dashboard/seriesTemporaisMetricas", JSON.stringify(response.data))
+                        alert("Importação realizada com sucesso!")
+                    })
+                    .catch(function (error) {
+                        alert("Ocorreu um erro ao tentar importar os arquivos.")
+                        console.log(error);
+                    })
+            );
         })
 
 
