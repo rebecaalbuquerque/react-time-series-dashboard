@@ -5337,4 +5337,12 @@ License - nucleoapp.com/license/
     content: "\ea64";
 }
 
+.img-fluid-center-horizontally {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* all icon font classes list here */

@@ -6,7 +6,7 @@ class MetricasReduzidas extends Component {
         super(props);
 
         this.state = {
-            seriesTemporaisMetricas: JSON.parse(localStorage.getItem("@time-series-dashboard/seriesTemporaisMetricas"))
+            seriesTemporaisMetricas: JSON.parse(localStorage.getItem("@time-series-dashboard/seriesTemporaisMetricas")).responseMetricas
         };
 
     }

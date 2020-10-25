@@ -24,7 +24,7 @@ class Metricas extends Component {
                         </p>
                         :
                         <div>
-                            { this.state.seriesTemporaisMetricas.length > 2
+                            { this.state.seriesTemporaisMetricas.responseMetricas.length > 2
                                 ? <Redirect from="*" to="/metricasCompletas" />
                                 : <Redirect from="*" to="/metricasReduzidas" />
                             }

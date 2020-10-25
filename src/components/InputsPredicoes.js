@@ -2,6 +2,12 @@ import React, {Component} from 'react'
 
 class InputsPredicoes extends Component {
 
+    constructor(props) {
+        super(props);
+
+        console.log(this.props.id)
+    }
+
     render() {
 
         return (

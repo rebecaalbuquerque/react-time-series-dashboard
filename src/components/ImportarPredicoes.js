@@ -34,7 +34,7 @@ class ImportarPredicoes extends Component {
             inputsPredicoes: [
                 ...this.state.inputsPredicoes,
                 <InputsPredicoes
-                    id={this.state.dados.length}
+                    id={this.state.inputsPredicoes.length}
                     key={"inputsPredicoes" + this.state.inputsPredicoes.length}
                     onDadosReaisChange={(e, id) => this.onDadosReaisChange(e, id)}
                     onPredicoesChange={(e, id) => this.onPredicoesChange(e, id)}
@@ -78,7 +78,6 @@ class ImportarPredicoes extends Component {
                 API
                     .post("/metricas", listData)
                     .then(function (response) {
-                        console.log(response.data)
                         localStorage.setItem("@time-series-dashboard/seriesTemporaisMetricas", JSON.stringify(response.data))
                         alert("Importação realizada com sucesso!")
                     })
@@ -93,6 +92,7 @@ class ImportarPredicoes extends Component {
     }
 
     onDadosReaisChange(e, id) {
+        console.log("id: " + id)
         this.initInDadosIfNotExists(id)
         this.state.dados[id].dadosReais = e.target.files[0]
     }
@@ -108,7 +108,9 @@ class ImportarPredicoes extends Component {
     }
 
     initInDadosIfNotExists(id) {
+
         if (this.state.dados.find(item => item.id === id) == null) {
+
             this.state.dados.push(
                 {
                     id: id,
