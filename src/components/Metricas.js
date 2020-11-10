@@ -24,10 +24,11 @@ class Metricas extends Component {
                         </p>
                         :
                         <div>
-                            { this.state.seriesTemporaisMetricas.responseMetricas.length > 2
+                            <Redirect from="*" to="/metricasCompletas" />
+                            {/*{ this.state.seriesTemporaisMetricas.responseMetricasPorModelo.length > 2
                                 ? <Redirect from="*" to="/metricasCompletas" />
                                 : <Redirect from="*" to="/metricasReduzidas" />
-                            }
+                            }*/}
                         </div>
                     }
 

@@ -10,12 +10,13 @@ class ImportarPredicoes extends Component {
         super(props);
 
         this.state = {
+            dadosReais: null,
+            dadosReaisArquivo: null,
             dados: [],
             inputsPredicoes: [
                 <InputsPredicoes
                     id={0}
                     key={"inputsPredicoes" + 0}
-                    onDadosReaisChange={(e, id) => this.onDadosReaisChange(e, id)}
                     onPredicoesChange={(e, id) => this.onPredicoesChange(e, id)}
                     onNomeModeloChange={(e, id) => this.onNomeModeloChange(e, id)}/>
             ]
@@ -36,7 +37,6 @@ class ImportarPredicoes extends Component {
                 <InputsPredicoes
                     id={this.state.inputsPredicoes.length}
                     key={"inputsPredicoes" + this.state.inputsPredicoes.length}
-                    onDadosReaisChange={(e, id) => this.onDadosReaisChange(e, id)}
                     onPredicoesChange={(e, id) => this.onPredicoesChange(e, id)}
                     onNomeModeloChange={(e, id) => this.onNomeModeloChange(e, id)}/>
             ]
@@ -47,21 +47,22 @@ class ImportarPredicoes extends Component {
     onFormSubmit(e) {
         e.preventDefault()
 
-        let listData = []
+        let listDataPredicoes = []
+        let base64DadosReais = null
 
         new Promise((resolve, reject) => {
 
-            this.state.dados.forEach((item, index) => {
+            fileToBase64(this.state.dadosReais).then(resultDadosReais => {
 
-                fileToBase64(item.dadosReais).then(resultDadosReais => {
+                base64DadosReais = resultDadosReais
+
+                this.state.dados.forEach((item, index) => {
 
                     fileToBase64(item.predicoes).then(resultPredicoes => {
 
-                        listData.push({
+                        listDataPredicoes.push({
                             nomeModelo: item.nomeModelo,
-                            dadosReais: resultDadosReais,
-                            dadosReaisArquivo: item.dadosReais.name,
-                            predicoes: resultPredicoes
+                            predicao: resultPredicoes
                         })
 
                         if (index === this.state.dados.length - 1)
@@ -72,11 +73,12 @@ class ImportarPredicoes extends Component {
 
             })
 
+
         }).then(() => {
 
             trackPromise(
                 API
-                    .post("/metricas", listData)
+                    .post("/metricas", { dadosReais: base64DadosReais, dadosReaisArquivo: this.state.dadosReaisArquivo, predicoes: listDataPredicoes})
                     .then(function (response) {
                         localStorage.setItem("@time-series-dashboard/seriesTemporaisMetricas", JSON.stringify(response.data))
                         alert("Importação realizada com sucesso!")
@@ -91,10 +93,11 @@ class ImportarPredicoes extends Component {
 
     }
 
-    onDadosReaisChange(e, id) {
-        console.log("id: " + id)
-        this.initInDadosIfNotExists(id)
-        this.state.dados[id].dadosReais = e.target.files[0]
+    onDadosReaisChange(e) {
+        this.setState({dadosReais: e.target.files[0]})
+
+        if(e.target.files[0] != null)
+            this.setState({dadosReaisArquivo: e.target.files[0].name})
     }
 
     onPredicoesChange(e, id) {
@@ -109,13 +112,15 @@ class ImportarPredicoes extends Component {
 
     initInDadosIfNotExists(id) {
 
+        console.log("Tentando adicionar " + id)
+        console.log(this.state.dados)
+
         if (this.state.dados.find(item => item.id === id) == null) {
 
             this.state.dados.push(
                 {
                     id: id,
                     nomeModelo: "",
-                    dadosReais: null,
                     predicoes: null
                 }
             )
@@ -129,6 +134,17 @@ class ImportarPredicoes extends Component {
                 <div className="container-fluid">
 
                     <form id="form-importar-predicoes" onSubmit={this.onFormSubmit} encType="multipart/form-data">
+
+                        <div className="card card-input">
+                            <label>
+                                <h3 className="card-input-title">Dados reais</h3>
+                                <br/>
+                                <input type="file"
+                                       required={true}
+                                       onChange={this.onDadosReaisChange}
+                                       accept=".csv"/>
+                            </label>
+                        </div>
 
                         {this.state.inputsPredicoes.map((item => item))}
 

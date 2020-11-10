@@ -8,53 +8,74 @@ class MetricasCompletas extends Component {
         super(props);
 
         this.state = {
-            filtros: JSON.parse(localStorage.getItem("@time-series-dashboard/seriesTemporaisMetricas")).filtros,
-            seriesTemporaisMetricas: JSON.parse(localStorage.getItem("@time-series-dashboard/seriesTemporaisMetricas")).responseMetricas,
-            serieSelecionada: JSON.parse(localStorage.getItem("@time-series-dashboard/seriesTemporaisMetricas")).responseMetricas[0],
-            filtroModeloSelecionado: "Selecione...",
+            filtrosModelos: JSON.parse(localStorage.getItem("@time-series-dashboard/seriesTemporaisMetricas")).filtros.modelos,
+            filtrosCategorias: JSON.parse(localStorage.getItem("@time-series-dashboard/seriesTemporaisMetricas")).filtros.categorias,
+            filtrosItens: ["Selecione..."],
+            seriesTemporaisMetricas: JSON.parse(localStorage.getItem("@time-series-dashboard/seriesTemporaisMetricas")).responseMetricasPorModelo,
+            serieSelecionada: JSON.parse(localStorage.getItem("@time-series-dashboard/seriesTemporaisMetricas")).responseMetricasPorModelo[0],
+            serieSelecionada2: JSON.parse(localStorage.getItem("@time-series-dashboard/seriesTemporaisMetricas")).responseMetricasPorModelo[0],
+            filtroModeloSelecionado: JSON.parse(localStorage.getItem("@time-series-dashboard/seriesTemporaisMetricas")).responseMetricasPorModelo[0].modelo,
+            filtroModeloSelecionado2: JSON.parse(localStorage.getItem("@time-series-dashboard/seriesTemporaisMetricas")).responseMetricasPorModelo[0].modelo,
             filtroCategoriaSelecionado: "Selecione...",
             filtroItemSelecionado: "Selecione..."
         };
-
 
         this.formatTableHead = this.formatTableHead.bind(this)
         this.formatTableBody = this.formatTableBody.bind(this)
         this.onItemSelected = this.onItemSelected.bind(this)
         this.onFiltroSelected = this.onFiltroSelected.bind(this)
+        this.onFiltroAction = this.onFiltroAction.bind(this)
 
     }
 
-    async onFiltroSelected(e, tipoFiltro) {
+    onFiltroSelected(e, tipoFiltro) {
 
         switch (tipoFiltro) {
-            case 'modelo':
-                this.setState({
-                    filtroModeloSelecionado: e.target.value,
-                    filtroCategoriaSelecionado: "Selecione...",
-                    filtroItemSelecionado: "Selecione..."
-                })
+            case 'modelo1':
+                this.setState({ filtroModeloSelecionado: e.target.value })
+                break;
+            case 'modelo2':
+                this.setState({ filtroModeloSelecionado2: e.target.value })
                 break;
             case 'categoria':
+
+                let filtros = e.target.value === "Selecione..." ?
+                    ["Selecione..."] :
+                    ["Selecione..."].concat(this.state.filtrosCategorias.find(item => item.nome === e.target.value).itens)
+
                 this.setState({
-                    filtroModeloSelecionado: "Selecione...",
-                    filtroCategoriaSelecionado: e.target.value,
-                    filtroItemSelecionado: "Selecione..."
+                    filtrosItens: filtros,
+                    filtroCategoriaSelecionado: e.target.value
                 })
                 break;
             case 'item':
-                this.setState({
-                    filtroModeloSelecionado: "Selecione...",
-                    filtroCategoriaSelecionado: "Selecione...",
-                    filtroItemSelecionado: e.target.value
-                })
+                this.setState({ filtroItemSelecionado: e.target.value })
                 break;
             default:
                 break;
         }
 
-        if(e.target.value !== "Selecione...") {
+    }
+
+    async onFiltroAction() {
+
+        if(this.state.filtroModeloSelecionado !== "Selecione...") {
+
+            let data = {
+                primeiroFiltro: {
+                    "modelo": this.state.filtroModeloSelecionado,
+                    "categoria": this.state.filtroCategoriaSelecionado === "Selecione..." ? null : this.state.filtroCategoriaSelecionado,
+                    "item": this.state.filtroItemSelecionado === "Selecione..." ? null : this.state.filtroItemSelecionado
+                },
+                segundoFiltro : {
+                    "modelo": this.state.filtroModeloSelecionado2,
+                    "categoria": this.state.filtroCategoriaSelecionado === "Selecione..." ? null : this.state.filtroCategoriaSelecionado,
+                    "item": this.state.filtroItemSelecionado === "Selecione..." ? null : this.state.filtroItemSelecionado
+                }
+            }
+
             let response = await trackPromise(
-                API.post("/metricasFiltradas", {filtro: {tipo: tipoFiltro, valor: e.target.value}})
+                API.post("/metricasFiltradas", data)
             ).catch((error) => {
                 alert("Ocorreu um erro ao tentar realizar o filtro.")
                 console.log(error);
@@ -62,11 +83,11 @@ class MetricasCompletas extends Component {
 
             if(response.data !== undefined) {
                 this.setState({
-                    serieSelecionada: { imagem: response.data.imagem }
+                    serieSelecionada: { imagem: response.data.primeiroFiltroImagem },
+                    serieSelecionada2: { imagem: response.data.segundoFiltroImagem }
                 })
             }
         }
-
     }
 
     onItemSelected(e) {
@@ -136,89 +157,137 @@ class MetricasCompletas extends Component {
 
                     <br/>
 
-                    <h3>Bases</h3>
-
-                    <div className="form-group">
-                        <select
-                            className="form-control"
-                            value={this.state.serieSelecionada.nome}
-                            onChange={(e) => this.onItemSelected(e)}>
-
-                            {this.state.seriesTemporaisMetricas.map((item) =>
-                                <option key={item.nome}>{item.nome}</option>
-                            )}
-
-                        </select>
-                    </div>
-
-                    <br/>
-
                     <h3>Filtros</h3>
 
                     <div className="row">
 
-                        <div className="col-md-4">
-                            <div className="form-group">
-                                <label>Modelo</label>
+                        <div className="col-3">
 
-                                <select
-                                    className="form-control"
-                                    value={this.state.filtroModeloSelecionado}
-                                    onChange={(e) => this.onFiltroSelected(e, "modelo")}>
+                            <div className="row">
+                                <div className="col">
 
-                                    <option key={"selecione"}>Selecione...</option>
-                                    {this.state.filtros.modelos.map((item, index) =>
-                                        <option key={index + item}>{item}</option>
-                                    )}
+                                    <div className="form-group">
+                                        <label>Modelo 1</label>
 
-                                </select>
+                                        <select
+                                            className="form-control"
+                                            value={this.state.filtroModeloSelecionado}
+                                            required={true}
+                                            onChange={(e) => this.onFiltroSelected(e, "modelo1")}>
 
+                                            {this.state.filtrosModelos.map((item, index) =>
+                                                <option key={index + item}>{item}</option>
+                                            )}
+
+                                        </select>
+                                    </div>
+
+                                </div>
                             </div>
+
+                            <div className="row">
+                                <div className="col">
+
+                                    <div className="form-group">
+                                        <label>Modelo 2</label>
+
+                                        <select
+                                            className="form-control"
+                                            value={this.state.filtroModeloSelecionado2}
+                                            required={true}
+                                            onChange={(e) => this.onFiltroSelected(e, "modelo2")}>
+
+                                            {this.state.filtrosModelos.map((item, index) =>
+                                                <option key={index + item}>{item}</option>
+                                            )}
+
+                                        </select>
+                                    </div>
+
+                                </div>
+                            </div>
+
                         </div>
 
-                        <div className="col-md-4">
-                            <div className="form-group">
-                                <label>Categoria</label>
+                        <div className="col-9">
 
-                                <select
-                                    className="form-control"
-                                    value={this.state.filtroCategoriaSelecionado}
-                                    onChange={(e) => this.onFiltroSelected(e, "categoria")}>
+                            <div className="row align-items-center">
 
-                                    <option key={"selecione"}>Selecione...</option>
-                                    {this.state.filtros.categorias.map((item, index) =>
-                                        <option key={index + item}>{item}</option>
-                                    )}
+                                <div className="col">
+                                    <div className="form-group">
+                                        <label>Categoria</label>
 
-                                </select>
+                                        <select
+                                            className="form-control"
+                                            value={this.state.filtroCategoriaSelecionado}
+                                            onChange={(e) => this.onFiltroSelected(e, "categoria")}>
+
+                                            <option key={"selecione"}>Selecione...</option>
+                                            {this.state.filtrosCategorias.map((item, index) =>
+                                                <option key={index + item.nome}>{item.nome}</option>
+                                            )}
+
+                                        </select>
+
+                                    </div>
+                                </div>
+
+                                <div className="col">
+                                    <div className="form-group">
+                                        <label>Item</label>
+
+                                        <select
+                                            className="form-control"
+                                            value={this.state.filtroItemSelecionado}
+                                            onChange={(e) => this.onFiltroSelected(e, "item")}>
+
+                                            {this.state.filtrosItens.map((item, index) =>
+                                                <option key={index + item}>{item}</option>
+                                            )}
+
+                                        </select>
+
+                                    </div>
+                                </div>
+
+                                <div className="col">
+                                    <div className="col col-align-vertical">
+                                        <button
+                                            type="button"
+                                            className="btn-primary"
+                                            onClick={this.onFiltroAction}>
+                                            Filtrar
+                                        </button>
+                                    </div>
+                                </div>
 
                             </div>
-                        </div>
 
-                        <div className="col-md-4">
-                            <div className="form-group">
-                                <label>Item</label>
-
-                                <select
-                                    className="form-control"
-                                    value={this.state.filtroItemSelecionado}
-                                    onChange={(e) => this.onFiltroSelected(e, "item")}>
-
-                                    <option key={"selecione"}>Selecione...</option>
-                                    {this.state.filtros.itens.map((item, index) =>
-                                        <option key={index + item}>{item}</option>
-                                    )}
-
-                                </select>
-
-                            </div>
                         </div>
 
                     </div>
 
-                    <img className="img-fluid-center-horizontally"
-                         src={`data:image/jpeg;base64,${this.state.serieSelecionada.imagem}`}
-                         alt={"Série temporal"}/>
+                    <div className="row">
+
+                        <div className="col">
+
+                            <h3>Modelo 1</h3>
+
+                            <img className="img-fluid-center-horizontally"
+                                 src={`data:image/jpeg;base64,${this.state.serieSelecionada.imagem}`}
+                                 alt={"Série temporal 1"}/>
+                        </div>
+
+                        <div className="col">
+
+                            <h3>Modelo 2</h3>
+
+                            <img className="img-fluid-center-horizontally"
+                                 src={`data:image/jpeg;base64,${this.state.serieSelecionada2.imagem}`}
+                                 alt={"Série temporal 2"}/>
+                        </div>
+
+                    </div>
 
                 </div>
 

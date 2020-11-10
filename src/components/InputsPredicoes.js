@@ -15,20 +15,7 @@ class InputsPredicoes extends Component {
 
                 <div className="row">
 
-                    <div className="col-md-4">
-                        <div className="card card-input">
-                            <label>
-                                <h3 className="card-input-title">Dados reais</h3>
-                                <br/>
-                                <input type="file"
-                                       required={true}
-                                       onChange={(e) => this.props.onDadosReaisChange(e, this.props.id)}
-                                       accept=".csv"/>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div className="col-md-4">
+                    <div className="col-md-6">
                         <div className="card card-input">
                             <label>
                                 <h3 className="card-input-title">Predição</h3>
@@ -41,7 +28,7 @@ class InputsPredicoes extends Component {
                         </div>
                     </div>
 
-                    <div className="col-md-4">
+                    <div className="col-md-6">
                         <div className="card card-input">
                             <label>
                                 <h3 className="card-input-title">Modelo utilizado</h3>
